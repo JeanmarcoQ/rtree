@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[792]:
-
-
 import numpy as np
 import random
 from sklearn.cluster import KMeans
@@ -12,19 +9,11 @@ from matplotlib.patches import Rectangle
 from scipy.spatial import distance
 indice_chr=65
 
-
-# In[793]:
-
-
 def generar_data_para_kmeans(rectangulos):
     data=[]
     for i in range(len(rectangulos)):
         data.append(rectangulos[i].centro_gravedad())
     return data
-
-
-# In[794]:
-
 
 def sub_nodos(nodote_rectangulos):
     roo=generar_data_para_kmeans(nodote_rectangulos)
@@ -32,10 +21,6 @@ def sub_nodos(nodote_rectangulos):
     etiquetas=kmeans.labels_
     centroides=kmeans.cluster_centers_
     return etiquetas
-
-
-# In[795]:
-
 
 class rectangulo:
     def __init__(self,nombre, x1, y1, x2, y2):
@@ -51,10 +36,6 @@ class rectangulo:
             return True
         else:
             return False
-
-
-# In[796]:
-
 
 def encontrar_extremo(tipo_coordenada,arreglo_rectangulo):
     if tipo_coordenada=="x1":
@@ -91,14 +72,6 @@ def encontrar_extremo(tipo_coordenada,arreglo_rectangulo):
         return valor
 
 
-# In[ ]:
-
-
-
-
-
-# In[797]:
-
 
 class nodito:
     def __init__(self, nombre):
@@ -108,10 +81,6 @@ class nodito:
         self.hijo=(nodo_grande(elementos))
     def tipo(self):
         return "nodito"
-
-
-# In[798]:
-
 
 class nodo_grande:
     def __init__(self,elementos):
@@ -129,10 +98,6 @@ class nodo_grande:
         self.rect_nodote.y2=encontrar_extremo("y2",self.elementos)
     def tipo(self):
         return "nodote"
-
-
-# In[799]:
-
 
 class rtree:
     def __init__(self,maximo_hijos,profundidad_total,elementos):
@@ -261,26 +226,30 @@ class rtree:
                 resultado=nodo.noditos[i].hijo.rect_nodote.pertenece(elemento_a_eliminar)
                 if resultado==True:
                     self.eliminar_elemento(nodo.noditos[i].hijo,elemento_a_eliminar)
-                
-        
+
     def buscar_elemento(self, nodo, elemento_buscado):
         if self.raiz == nodo:
-            elemento_buscado=rectangulo(elemento_a_eliminar[4],elemento_a_eliminar[0],elemento_a_eliminar[1],elemento_a_eliminar[2],elemento_a_eliminar[3])
-        
-        
+            elemento_buscado=rectangulo(elemento_buscado[4],elemento_buscado[0],elemento_buscado[1],elemento_buscado[2],elemento_buscado[3])
+        if len(nodo.noditos)==0:
+            verificador=False
+            for i in range(len(nodo.elementos)):
+                if nodo.elementos[i].nombre==elemento_buscado.nombre:
+                    verificador=True
+            if verificador==True:
+                print("Vecinos encontrados en el nodo")
+                for i in range(len(nodo.elementos)):
+                    print("-> ",nodo.elementos[i].nombre)
+            else:
+                print("No existe el elemento")
+        else:
 
-
-    
-
-
-# In[800]:
-
+            for i in range(len(nodo.noditos)):
+                #Encontramos en que nodo se podria encontrar
+                resultado=nodo.noditos[i].hijo.rect_nodote.pertenece(elemento_buscado)
+                if resultado==True:
+                    self.buscar_elemento(nodo.noditos[i].hijo,elemento_buscado)
 
 del rtree1
-
-
-# In[801]:
-
 
 N = 10
 dentro_final=[]
@@ -291,92 +260,36 @@ dentro_final.append(rectangulo("c",8,2,10,3))
 dentro_final.append(rectangulo("d",15,1,18,4))
 dentro_final.append(rectangulo("e",10,1,11,6))
 dentro_final.append(rectangulo("f",1,10,3,13))
-dentro_final.append(rectangulo("g",16,16,21,23))
-dentro_final.append(rectangulo("h",22,24,27,30))
+dentro_final.append(rectangulo("g",16,16,18,19))
+dentro_final.append(rectangulo("go",21,25,22,26))
+dentro_final.append(rectangulo("dash",20,20,24,24))
+dentro_final.append(rectangulo("h",25,27,27,30))
+dentro_final.append(rectangulo("hoy",20,15,24,18))
 dentro_final.append(rectangulo("i",8,8,15,15))
 dentro_final.append(rectangulo("j",1,18,3,25))
 
-
-# In[802]:
-
-
 rtree1=rtree(2,2,dentro_final)
-
-
-# In[803]:
-
 
 rtree1.insertar_rtree(rtree1.raiz)
 
-
-# In[804]:
-
-
 rtree1.recorrido_rtree(rtree1.raiz,0)
-
-
-# In[805]:
-
 
 rtree1.pintar_cuadro(rtree1.raiz)
 
-
-# In[806]:
-
+rtree1.buscar_elemento(rtree1.raiz,[25,27,27,30,"o"])
 
 rtree1.insertar_nuevo_elemento(rtree1.raiz,[6,6,8,8,"z"])
 
-
-# In[807]:
-
-
 rtree1.insertar_nuevo_elemento(rtree1.raiz,[12,26,16,27,"m"])
 
-
-# In[808]:
-
-
 rtree1.recorrido_rtree(rtree1.raiz,0)
-
-
-# In[809]:
-
 
 rtree1.pintar_cuadro(rtree1.raiz)
 
-
-# In[810]:
-
-
 rtree1.recorrido_rtree(rtree1.raiz,0)
-
-
-# In[811]:
-
 
 rtree1.eliminar_elemento(rtree1.raiz,[15,1,18,4,"d"])
 
-
-# In[812]:
-
-
 rtree1.pintar_cuadro(rtree1.raiz)
 
-
-# In[813]:
-
-
 rtree1.recorrido_rtree(rtree1.raiz,0)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
