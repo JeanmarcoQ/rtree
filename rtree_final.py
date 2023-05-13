@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import numpy as np
 import random
 from sklearn.cluster import KMeans
@@ -175,7 +172,7 @@ class rtree:
                                       elemento_nuevo[2],elemento_nuevo[3])
             
         nodo.elementos.append(elemento_nuevo)
-            
+        nodo.actualizar_rect()    
         
         resultado=nodo.rect_nodote.pertenece(elemento_nuevo)
 
@@ -194,10 +191,6 @@ class rtree:
             nodo.noditos[i_min].hijo.elementos.append(elemento_nuevo)
             nodo.noditos[i_min].hijo.actualizar_rect()
             
-            #nodo.noditos[i_min].hijo.rect_nodote.x1=encontrar_extremo("x1",nodo.noditos[i_min].hijo.elementos)
-            #nodo.noditos[i_min].hijo.rect_nodote.y1=encontrar_extremo("y1",nodo.noditos[i_min].hijo.elementos)
-            #nodo.noditos[i_min].hijo.rect_nodote.x2=encontrar_extremo("x2",nodo.noditos[i_min].hijo.elementos)
-            #nodo.noditos[i_min].hijo.rect_nodote.y2=encontrar_extremo("y2",nodo.noditos[i_min].hijo.elementos)
         else:
             indice_entra=resultado_hijos.index(True)
             if len(nodo.noditos[indice_entra].hijo.noditos)!=0:
@@ -239,7 +232,9 @@ class rtree:
                 print("Vecinos encontrados en el nodo")
                 for i in range(len(nodo.elementos)):
                     print("-> ",nodo.elementos[i].nombre)
+                return True
             else:
+                
                 print("No existe el elemento")
         else:
 
@@ -249,7 +244,8 @@ class rtree:
                 if resultado==True:
                     self.buscar_elemento(nodo.noditos[i].hijo,elemento_buscado)
 
-del rtree1
+#Por si ocurre un error ejecutar
+#del rtree1
 
 N = 10
 dentro_final=[]
@@ -280,7 +276,7 @@ rtree1.buscar_elemento(rtree1.raiz,[25,27,27,30,"o"])
 
 rtree1.insertar_nuevo_elemento(rtree1.raiz,[6,6,8,8,"z"])
 
-rtree1.insertar_nuevo_elemento(rtree1.raiz,[12,26,16,27,"m"])
+rtree1.insertar_nuevo_elemento(rtree1.raiz,[11,24,13,26,"ro"])
 
 rtree1.recorrido_rtree(rtree1.raiz,0)
 
@@ -293,3 +289,4 @@ rtree1.eliminar_elemento(rtree1.raiz,[15,1,18,4,"d"])
 rtree1.pintar_cuadro(rtree1.raiz)
 
 rtree1.recorrido_rtree(rtree1.raiz,0)
+
